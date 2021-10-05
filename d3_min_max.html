@@ -17,11 +17,27 @@
   <h4>d3_min_max.html &#9679; d3.min.js &#9679; data/fruit.csv</h4>
 
 
+<h3> min(), max()</h3>
+<p>Since we load data dynamically and do not always know what the min and max values of the data are, there are functions for this in d3:
 
+If we have an array, we can simply call the max-function like this:
+</p>
+<p class="code">
+  let data = [1, 2, 3, 4, 5]; <br/>
+  let min = d3.min(data); // 1
+</p>
+<p>
+  If your data consists of more complex objects, you can pass any of these methods an anonymous accessor function as second parameter, like we do it here with the weight of the fruits:
+</p>
+<p class="code">
 
+  let maxWeight = d3.max(data, function(d){ <br/>
+         return d.weight; <br/>
+  });
+</p>
   <h3> Example </h3>
   <p>
-    Look at the code, we have implemented the scale into out graph and used it to display the fruits on the right place on the x-axis.
+    If you look at the code, it works exactly as we aspected:
   </p>
 
   <!-- First create the SVG -->
@@ -47,7 +63,9 @@
       console.log(data) //output the converted data
 
       /* SCALES */
-      let maxWeight = 750; //Maximum weight of all fruits
+      let maxWeight = d3.max(data, function(d){ //Maximum weight of all fruits
+             return d.weight; //We only evaluate the weight.
+      });
       let scaleX = d3.scaleLinear()
       .domain([0, maxWeight])
       .range([0, 550]); // 550 is the value I set for the maximum width
@@ -61,17 +79,29 @@
       .attr("cx",(d,i) => scaleX(d.weight)) //set x-coordinate depending on the index
       .attr("r", d => d.size) //set radius depending on the size
       .attr("fill", d => d.color) //set color depening on the color
+
+
+      let ex = d3.extent(data, function(d){ //Maximum weight of all fruits
+             return d.weight; //We only evaluate the weight.
+      });
+      console.log(ex)
     })
   </script>
 
 
+  <h3> extent() and more </h3>
+  <p>
+    You can also use the extent()-function in the same way as min/max, the return value will be an array instead: [min, max].
+  </p>
+  <p>
+    And there are a lot more statistical functions in d3, like <b> mean, median, quantile, sum </b>and more!
+  </p>
 
-
-  <h3>More about min/max</h3>
+  <h3>More about statistical measures</h3>
   <ul>
 
     <li>
-      <a href="https://github.com/d3/d3/blob/main/API.md#scales-d3-scale">List of possible scales</a> <br/>
+      <a href="https://github.com/d3/d3-array/blob/main/README.md#statistics">More statistical methods in D3</a> <br/>
     </li>
   </ul>
 </body>
