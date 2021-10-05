@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script src="./scripts/d3.min.js"></script>
+  <title>D3 Loading Data</title>
+  <div class="header">
+    <a href="d3_loading_data.html"><button>back</button></a>
+    <a href="index.html"><button>Table of Contents</button></a>
+    <a href="d3_scales.html"><button>next</button></a>
+  </div>
+</head>
+
+<body>
+  <h1>Our first visualisation</h1>
+  <h4>d3_first_vis.html &#9679; d3.min.js</h4>
+
+
+  <h3>Loading data</h3>
+  <p>
+    D3 also allows us to load real data in various formats; in this tutorial we will use a .csv file.
+  </p>
+  
+    <script>
+      function loadAndConvert(){
+        d3.csv("./data/fruit.csv").then(data => {
+          data.forEach(d => {
+            d.size = +d["size"];
+            d.weight = +d.weight;
+            d.pricePerKg = +d.pricePerKg;
+          });
+          console.log(data)
+        })
+      }
+    </script>
+    <button onclick="loadAndConvert()">Run</button>
+
+  </body>
+  </html>
