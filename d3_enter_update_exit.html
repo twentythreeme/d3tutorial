@@ -4,43 +4,22 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="styles/main.css">
   <script src="./scripts/d3.min.js"></script>
-  <title>D3 Groups and tranformations</title>
+  <title>D3 Enter update exit</title>
   <div class="header">
-    <a href="d3_axis.html"><button>back</button></a>
+    <a href="d3_groups_and_transformations.html"><button>back</button></a>
     <a href="index.html"><button>Table of Contents</button></a>
-    <a href="d3_interaction.html"><button>next</button></a>
+    <a href="d3_enter_update_exit.html"><button>next</button></a>
   </div>
 </head>
 
 <body>
-  <h1>Groups and transformations</h1>
-  <h4>d3_groups_and_transformations.html &#9679; d3.min.js &#9679; data/fruit.csv</h4>
+  <h1>Enter update exit</h1>
+  <h4>d3_enter_update_exit.html &#9679; d3.min.js &#9679; data/fruit.csv</h4>
 
 
-  <h3> append("g")</h3>
+  <h3> About</h3>
   <p>
-    In the fruits-example we have now two elements which belong together: the fruits and the axis. If we now manipulate their position (e.g. adding another axis on the left side) we would like to do that in one transformation for the axis and fruits at once.
-    <br/> <br/>
-    SVGs provide the group element via the tag "g" to allow for group-wise manipulation of elements. Transformations can be applied to the group element (as to basic shapes) and affect all its children.
-
-  </p>
-
-  <p class="code">
-    //Add the group and translate it<br/>
-    let diagram = svg.append("g").attr("transform","translate(20,0)") <br/><br/>
-    //Appends the fruits to the group <br/>
-    diagram.selectAll("fruits")<br/>
-    .data(data)<br/>
-    .enter()<br/>
-    .append("circle") (...)<br/><br/>
-    //Appends the axis to the group <br/>
-    diagram.append("g").call(axisX) (...)<br/><br/>
-
-
-  </p>
-  <h3> Example </h3>
-  <p>
-    If you look at the code, it works exactly as we aspected:
+    Until now our visualizations do not allow any user interaction. Since interaction is an integral building block of most recent visualizations we will now take a glance at simple ways to integrate this in our page.
   </p>
 
   <!-- First create the SVG -->
@@ -48,7 +27,7 @@
   <script>
 
     let svg = d3.select("#firstvis"); //Select and create a variable for the SVG
-    let diagram = svg.append("g").attr("transform","translate(20,0)")
+    let diagram = svg.append("g").attr("transform","translate(20,0)").attr("id","diagram")
 
     //Add a title
     svg.append("text")
@@ -56,6 +35,7 @@
     .attr("y",20)
     .attr("x",125)
     .style("font-weight","bold")
+    .attr("id","title")
 
     d3.csv("./data/fruit.csv") //Load the data
     .then(data => { //wait for that the data is loaded
@@ -83,6 +63,8 @@
       .attr("cx",(d,i) => scaleX(d.weight)) //set x-coordinate depending on the index
       .attr("r", d => d.size) //set radius depending on the size
       .attr("fill", d => d.color) //set color depening on the color
+      .on("mouseover",fruitOver)
+      .on("mouseout",fruitOut)
 
       /* AXIS */
       let axisX = d3.axisBottom() //define an axis on the bottom
@@ -92,14 +74,29 @@
       diagram.append("g").call(axisX)
       .attr("transform","translate(0,150)") //we just move the axis to the bottom of our SVG
 
-
+      /* INTERACTION */
+      function fruitOver(event, d){
+        d3.select("#diagram").append("text")
+        .text(d.name)
+        .attr("x", scaleX(d.weight) - 20)
+        .attr("y", 100 - d.size - 10)
+        .attr("id", "fruitName")
+      }
+      function fruitOut(event, d){
+        d3.select("#fruitName").remove();
+      }
     })
+
+
   </script>
 
-  <h3>More about transformations</h3>
+  <h3>More about interaction</h3>
   <ul>
     <li>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform">List of transformations</a> <br/>
+      <a href="https://www.w3schools.com/js/js_events.asp">JS events on w3schools</a> <br/>
+    </li>
+    <li>
+      <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">List of all DOM events</a> <br/>
     </li>
   </ul>
 </body>
