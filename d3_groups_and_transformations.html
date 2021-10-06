@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script src="./scripts/d3.min.js"></script>
+  <title>D3 Minimum and Maximum</title>
+  <div class="header">
+    <a href="d3_axis.html"><button>back</button></a>
+    <a href="index.html"><button>Table of Contents</button></a>
+    <a href="d3_interaction.html"><button>next</button></a>
+  </div>
+</head>
+
+<body>
+  <h1>Groups and transformations</h1>
+  <h4>d3_groups_and_transformations.html &#9679; d3.min.js &#9679; data/fruit.csv</h4>
+
+
+<h3> append("g")</h3>
+<p>In the last assignment you probably plotted the bars and the labels on the same level in either the x or the y dimension. Those elements belong together spatially and if we manipulate their position (imagine sorting the bars by size), we would like to do that in one transformation for the bar and label at once.
+  <br/> <br/>
+SVGs provide the group element via the tag <g></g> to allow for group-wise manipulation of elements. Transformations can be applied to the group element (as to basic shapes) and affect all its children.
+
+</p>
+<p class="code">
+//Add the group
+var group = mySVG.append("g");
+//Appends a circle to the group
+group.append("circle").attr("r",10);
+//Appends a rectangle to the group
+group.append("rect") .attr("width",5).attr("height",5);
+//Translates the group, hence both the rectangle and circle
+group.attr("transform","translate(70, 50)");
+
+</p>
+  <h3> Example </h3>
+  <p>
+    If you look at the code, it works exactly as we aspected:
+  </p>
+
+  <!-- First create the SVG -->
+  <svg width="600" height="200" id="firstvis"></svg>
+  <script>
+
+    let svg = d3.select("#firstvis"); //Select and create a variable for the SVG
+
+    //Add a title
+    svg.append("text")
+    .text("Fruits")
+    .attr("y",20)
+    .attr("x",125)
+    .style("font-weight","bold")
+
+    d3.csv("./data/fruit.csv") //Load the data
+    .then(data => { //wait for that the data is loaded
+      data.forEach(d => { //convert the strings to numbers
+        d.size = +d["size"];
+        d.weight = +d.weight;
+        d.pricePerKg = +d.pricePerKg;
+      });
+      console.log(data) //output the converted data
+
+      /* SCALES */
+      let maxWeight = d3.max(data, function(d){ //Maximum weight of all fruits
+             return d.weight; //We only evaluate the weight.
+      });
+      let scaleX = d3.scaleLinear()
+      .domain([0, maxWeight])
+      .range([0, 550]); // 550 is the value I set for the maximum width
+
+      /* PLOT DATA */
+      svg.selectAll("fruits") //select all Fruits, you can choose a name for this group
+      .data(data) //bind the data
+      .enter() //create those elements, we don't have right now
+      .append("circle") //append circles
+      .attr("cy",100) //set y-coordinate
+      .attr("cx",(d,i) => scaleX(d.weight)) //set x-coordinate depending on the index
+      .attr("r", d => d.size) //set radius depending on the size
+      .attr("fill", d => d.color) //set color depening on the color
+
+
+      let ex = d3.extent(data, function(d){ //Maximum weight of all fruits
+             return d.weight; //We only evaluate the weight.
+      });
+      console.log(ex)
+    })
+  </script>
+
+
+  <h3> extent() and more </h3>
+  <p>
+    You can also use the extent()-function in the same way as min/max, the return value will be an array instead: [min, max].
+  </p>
+  <p>
+    And there are a lot more statistical functions in d3, like <b> mean, median, quantile, sum </b>and more!
+  </p>
+
+  <h3>More about statistical measures</h3>
+  <ul>
+
+    <li>
+      <a href="https://github.com/d3/d3-array/blob/main/README.md#statistics">More statistical methods in D3</a> <br/>
+    </li>
+  </ul>
+</body>
+</html>

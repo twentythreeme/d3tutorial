@@ -8,7 +8,7 @@
   <div class="header">
     <a href="d3_scales.html"><button>back</button></a>
     <a href="index.html"><button>Table of Contents</button></a>
-    <a href="d3_groups_and_transformations.html"><button>next</button></a>
+    <a href="d3_axis.html"><button>next</button></a>
   </div>
 </head>
 
@@ -24,7 +24,7 @@ If we have an array, we can simply call the max-function like this:
 </p>
 <p class="code">
   let data = [1, 2, 3, 4, 5]; <br/>
-  let min = d3.min(data); // 1
+  let min = d3.min(data); // output: 1
 </p>
 <p>
   If your data consists of more complex objects, you can pass any of these methods an anonymous accessor function as second parameter, like we do it here with the weight of the fruits:
@@ -79,12 +79,6 @@ If we have an array, we can simply call the max-function like this:
       .attr("cx",(d,i) => scaleX(d.weight)) //set x-coordinate depending on the index
       .attr("r", d => d.size) //set radius depending on the size
       .attr("fill", d => d.color) //set color depening on the color
-
-
-      let ex = d3.extent(data, function(d){ //Maximum weight of all fruits
-             return d.weight; //We only evaluate the weight.
-      });
-      console.log(ex)
     })
   </script>
 
