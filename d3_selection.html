@@ -20,7 +20,7 @@
 
 <body>
   <h1>D3 Basic Functions</h1>
-  <h4>d3_introduction.html &#9679; d3.min.js</h4>
+  <h4>d3_selection.html &#9679; d3.min.js</h4>
 
 
   <h3> select() and selectAll() </h3>
@@ -60,7 +60,7 @@
     .attr("y", 100)
     .attr("fill","green")
     .text("Sample text")
-    .attr("class","text")
+    .attr("class","sample_text")
   </script>
   <p>
     In the code you can find these selections:
@@ -82,7 +82,7 @@
       .attr("ry",20)
       .attr("rx",20)
 
-      d3.select(".text") //Select with class
+      d3.select(".sample_text") //Select with class
       .attr("fill","blue")
     }
   </script>
