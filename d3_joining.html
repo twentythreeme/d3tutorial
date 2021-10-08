@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script src="./scripts/d3.min.js"></script>
+  <title>D3 Joining data and HTML elements</title>
+  <div class="header">
+    <a href="d3_enter_update_exit.html"><button>back</button></a>
+    <a href="index.html"><button>Table of Contents</button></a>
+    <a href="d3_moretocome.html"><button>next</button></a>
+  </div>
+</head>
+
+<body>
+  <h1>Joining data and HTML elements</h1>
+  <h4>d3_enter_update_exit.html &#9679; d3.min.js &#9679; data/fruit.csv</h4>
+
+
+  <h3> About</h3>
+  <p>
+    Usually when we join data and HTML elements with the .data() function, they are linked by index, meaning that the nth element is joined with the nth data-item.
+  </p>
+  <p>
+    Often we don't want elements to be joined by their index, but we want the same element to be joined to the same data item, no matter what happened to the data. This has efficiency advantages and also helps create beautiful animations.
+  </p>
+  <p>
+    To achieve that we can give the .data() function an additional anonymous function, called the key function, as argument, specifying by what criterion the HTML elements and data item should be joined.
+  </p>
+  <p>
+    Letting the key function return the data item itself, or one of its attributes that uniquely identifies it, allows us to make the joins exactly as stated above.
+  </p>
+
+  <p class="code">
+    svg.selectAll("circle") <br/>
+    .data(data, function(d) { return d; });
+  </p>
+
+
+
+  <h3>More about Joining Data</h3>
+  <ul>
+    <li>
+      <a href="https://bost.ocks.org/mike/join/">Data Join</a> <br/>
+    </li>
+    <li>
+      <a href="https://bost.ocks.org/mike/constancy/">List of all DOM events</a> <br/>
+    </li>
+  </ul>
+</body>
+</html>
