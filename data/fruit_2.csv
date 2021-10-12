@@ -1,0 +1,14 @@
+name,size,weight,color,pricePerKg
+Orange,10,131,orange,3.5
+Apple,8,100,red,1.75
+Melon,30,750,green,0.99
+Grape,2,10,blueviolet,1.25
+Kiwi,6,80,brown,4.5
+Coconut,17,300,"rgb(77, 38, 0)",6
+Pumpkin,26,500,"rgb(232, 91, 35)",2.5
+Cherry,1.8,12,darkred,2.5
+Peach,7,98,orange,4
+Lime,5,70,yellowgreen,4.5
+Physalis,2.3,13,orange,9
+Pomegranate,14,400,firebrick,4.8
+Strawberry,4,55,red,3.5
