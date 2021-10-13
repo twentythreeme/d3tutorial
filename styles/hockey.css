@@ -1,0 +1,12 @@
+.player-info > p{
+  font-size: small;
+  line-height: 1em;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+.player-info{
+  padding: 1px 20px 20px;
+  background-color: rgb(227, 227, 227)
+  /* display: flex; */
+  /* justify-content: left; */
+}
