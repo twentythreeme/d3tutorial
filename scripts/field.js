@@ -21,7 +21,6 @@ function createField(svg){
   const svgWidth = svg.attr("width")
   const paddingL = 10;
   const paddingT = 10;
-  // const paddingB = 10;
   const paddingR = 10;
 
   const fieldWidth = svgWidth - paddingL - paddingR;
@@ -34,6 +33,7 @@ function createField(svg){
   const blue = "rgb(112, 148, 255)";
   const red = "rgb(255, 82, 82)";
 
+  //Gray background
   svg.append("rect")
     .attr("width", svgWidth)
     .attr("height", svgHeight)
@@ -41,6 +41,7 @@ function createField(svg){
 
   let field = svg.append("g").attr("transform","translate(" + paddingL + ","+ paddingT +")")
 
+  //white ice 
   field.append("rect")
     .attr("width", fieldWidth)
     .attr("height", fieldHeight)

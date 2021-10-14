@@ -15,7 +15,7 @@
 
 <body>
   <h1>Icehockey-Example</h1>
-  <h4>d3_hockey.html &#9679; d3.min.js &#9679; scripts/field.js &#9679; data/hockey.csv &#9679; styles/hockey.css</h4>
+  <h4>d3_hockey.html &#9679; d3.min.js &#9679; scripts/field.js &#9679; scripts/selection.js &#9679; scripts/interaction.js &#9679; scripts/helpers.js &#9679;data/hockey.csv &#9679; styles/hockey.css</h4>
 
   <h3> About</h3>
 
@@ -38,21 +38,35 @@
     <p><b>Weight: </b><text id="pWeight"></text> kg</p>
     <p><b>Birthday: </b><text id="pBirthday"/></p>
     </div>
+    <br>
+    <div id="selection" class="player-info">
+      <h3>Selection</h3>
+    </div>
 
 
   <script>
-  const svgWidth = 650;
+  const svgWidth = window.innerWidth - 40;
   const svgHeight = svgWidth/4*2.06
   let players;
   let time = 0;
   let maxTime = 1;
   let playerData;
+  let selectedPlayers = [];
 
   let svg = d3.select("#fieldSVG")
     .attr("width",svgWidth)
     .attr("height",svgHeight)
 
   let field = createField(svg);
+</script>
+<script src="./scripts/selection.js"></script>
+<script src="./scripts/helpers.js"></script>
+<script src="./scripts/interaction.js"></script>
+<script type="text/javascript">
+
+  createSelectionSVG(200,200,"Mean size","size");
+  createSelectionSVG(200,200,"Mean weight","weight");
+  createSelectionSVG(200,200,"Mean age","age");
 
   d3.csv("./data/hockey.csv").then(data =>{
     //Convert data
@@ -64,6 +78,7 @@
       d.size = +d.size;
       d.weight = +d.weight;
       d.birthday = new Date(d.birthday)
+      d.age = getAge(d.birthday)
       delete(d.posX1)
       delete(d.posX2)
       delete(d.posY1)
@@ -71,10 +86,15 @@
     })
     console.log(data)
     playerData = data;
+    selectedPlayers = data;
+
+    createSelectionTable();
+    createSelectionCharts("size");
+    createSelectionCharts("weight");
+    createSelectionCharts("age");
 
     let drag = d3.drag()
       .on("drag", handlePlayerDrag)
-      .on("end", function (event) { console.log(m.invert(event.x) + ", " + m.invert(event.y)) });
 
     players = field.selectAll("players")
       .data(data, d => d.number)
@@ -91,111 +111,6 @@
       .style("cursor", "pointer")
       .call(drag)
   })
-
-  function handlePlayerDrag(event,d,i){
-    event.subject.pos[time].x = m.invert(event.x);
-    event.subject.pos[time].y = m.invert(event.y);
-    d3.select("#playerName")
-      .attr("x", event.x)
-      .attr("y", event.y)
-    updateInstant();
-  }
-  function playerOver(event,d,i){
-      d3.select(this).attr("r",10)
-      fillPlayerInfo(d)
-  }
-
-  function fillPlayerInfo(d){
-    d3.select("#pName").text(d.name)
-    d3.select("#pTeam").text(d.team)
-    d3.select("#pPosition").text(d.position)
-    d3.select("#pNumber").text(d.number)
-    d3.select("#pSize").text(d.size)
-    d3.select("#pWeight").text(d.weight)
-    d3.select("#pBirthday").text(formatDate(d.birthday) + " (" + getAge(d.birthday) + ")")
-  }
-  function formatDate(date){
-    return date.getDate() + "." + date.getMonth()+1 + "." + date.getFullYear()
-  }
-  function getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-  }
-  function playerOut(event,d,i){
-      d3.select(this)
-        .attr("r", getPuckSize(d))
-  }
-
-  function timeplus(){
-    if(increaseTime()){
-      update();
-    }
-  }
-
-  function timeminus(){
-    if(decreaseTime()){
-      update();
-    }
-  }
-
-  function update(){
-    d3.select("#time").text(time)
-    players
-      .transition()
-      .duration(1000)
-      .attr("cy", d => m(d.pos[time].y))
-      .attr("cx", d => m(d.pos[time].x))
-  }
-
-  function updateInstant(){
-    players
-      .attr("cy", d => m(d.pos[time].y))
-      .attr("cx", d => m(d.pos[time].x))
-  }
-
-  function addTimePoint(){
-    playerData.forEach((d, i) => {
-      d.pos.push({x: d.pos[d.pos.length-1].x, y:d.pos[d.pos.length-1].y}
-      )
-    });
-    maxTime += 1;
-    time = maxTime;
-    update()
-  }
-  function increaseTime(){
-    if(time < maxTime){
-      time+=1;
-      return true;
-    } else return false;
-  }
-  function decreaseTime(){
-    if(time > 0){
-      time -=1;
-      return true;
-    } return false;
-  }
-
-  function getColor(d){
-    if(d.team == "KAC") return "red"
-    else if(d.team == "VSV") return "rgb(77, 77, 255)"
-    else if(d.team == "Puck") return "black"
-  }
-  function getStrokeColor(d){
-    if(d.team == "KAC") return "black"
-    else if(d.team == "VSV") return "black"
-    else if(d.team == "Puck") return "white"
-  }
-
-  function getPuckSize(d){
-    if(d.team == "Puck") return 4;
-    else return 8
-    }
 
 
   </script>
